@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import io from 'socket.io-client'
-import uuid from 'uuid/v4'
+import React, { useEffect, useState, useCallback } from 'react';
+import io from 'socket.io-client';
+import uuid from 'uuid/v4';
 
-const myId = uuid()
-const socket = io('http://localhost:8080')
-socket.on('connect', () => console.log('[IO] Connect => A new connection has been established'))
+const myId = uuid();
+const socket = io('http://localhost:8080');
+socket.on('connect', () => console.log('[IO] Connect => A new connection has been established'));
 
 const Chat = () => {
-    const [message, updateMessage] = useState('')
-    const [messages, updateMessages] = useState([])
+    const [message, updateMessage] = useState('');
+    const [messages, updateMessages] = useState([]);
 
     useEffect(() => {
         const handleNewMessage = newMessage =>
             updateMessages([...messages, newMessage])
         socket.on('chat.message', handleNewMessage)
         return () => socket.off('chat.message', handleNewMessage)
-    }, [messages])
+    }, [messages]);
 
     const handleFormSubmit = event => {
         event.preventDefault()
@@ -26,10 +26,10 @@ const Chat = () => {
             })
             updateMessage('')
         }
-    }
+    };
 
     const handleInputChange = event =>
-        updateMessage(event.target.value)
+        updateMessage(event.target.value);
 
     return (
         <main className="container">
@@ -54,8 +54,8 @@ const Chat = () => {
                     value={message}
                 />
             </form>
-        </main>
-    )
+        </main>  
+    );
 }
 
-export default Chat
+export default Chat;
